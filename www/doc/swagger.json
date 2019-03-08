@@ -4,7 +4,7 @@
     "version" : "0.0.1",
     "title" : "Petstore Application"
   },
-  "host" : "localhost:8080",
+  "host" : "racoon.iot1.etsit.upv.es:8888",
   "basePath" : "/petstore/api",
   "tags" : [ {
     "name" : "Pet Resource"
