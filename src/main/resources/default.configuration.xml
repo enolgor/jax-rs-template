@@ -1,0 +1,7 @@
+<configuration>
+	<database>
+		<url>jdbc:mysql://racoon.iot1.etsit.upv.es:3306/petstore</url>
+		<username>root</username>
+		<password>root</password>
+	</database>
+</configuration>
