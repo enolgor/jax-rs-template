@@ -7,10 +7,62 @@
   "host" : "racoon.iot1.etsit.upv.es:8888",
   "basePath" : "/petstore/api",
   "tags" : [ {
+    "name" : "Authorization API"
+  }, {
     "name" : "Pet Resource"
   } ],
   "schemes" : [ "http" ],
   "paths" : {
+    "/authorization/token/generate" : {
+      "get" : {
+        "tags" : [ "Authorization API" ],
+        "summary" : "Generate new authorization token",
+        "description" : "",
+        "operationId" : "generateToken",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TokenInstance"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          }
+        }
+      }
+    },
+    "/authorization/token/refresh" : {
+      "post" : {
+        "tags" : [ "Authorization API" ],
+        "summary" : "Refresh authorization token",
+        "description" : "",
+        "operationId" : "refreshToken",
+        "consumes" : [ "text/plain" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/TokenInstance"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          }
+        }
+      }
+    },
     "/resource/pet/create" : {
       "put" : {
         "tags" : [ "Pet Resource" ],
@@ -170,6 +222,18 @@
         "currentDisease" : {
           "type" : "string",
           "enum" : [ "RABIA", "MOQUILLO", "PULGAS", "GARRAPATAS", "LEISHMANIOSIS" ]
+        }
+      }
+    },
+    "TokenInstance" : {
+      "type" : "object",
+      "properties" : {
+        "token" : {
+          "type" : "string"
+        },
+        "expiration" : {
+          "type" : "integer",
+          "format" : "int64"
         }
       }
     }

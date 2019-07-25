@@ -1,4 +1,10 @@
 <configuration>
+	<security>
+		<tokenDurationSeconds>3600</tokenDurationSeconds>
+		<authorizedUsers>
+			<user name="admin" password="admin" />
+		</authorizedUsers>
+	</security>
 	<database>
 		<url>jdbc:mysql://racoon.iot1.etsit.upv.es:3306/petstore</url>
 		<username>root</username>

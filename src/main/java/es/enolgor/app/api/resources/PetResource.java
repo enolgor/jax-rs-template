@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import es.enolgor.app.api.auth.Secured;
 import es.enolgor.app.datasource.DataSource;
 import es.enolgor.app.datasource.dao.DAOException.AlreadyExistsException;
 import es.enolgor.app.datasource.dao.DAOException.InternalException;
@@ -39,6 +40,7 @@ public class PetResource {
 	
 	@Inject DataSource dataSource;
 	
+	@Secured.Bearer
 	@GET @Path("/list")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "List all pets", response = Pet.class, responseContainer = "List")
