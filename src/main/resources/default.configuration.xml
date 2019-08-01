@@ -1,6 +1,16 @@
 <configuration>
+	<server>
+		<headers>
+			<header enabled="true" key="Access-Control-Allow-Origin" value="*" />
+			<header enabled="true" key="Access-Control-Allow-Headers" value="origin, content-type, accept, authorization" />
+			<header enabled="true" key="Access-Control-Allow-Credentials" value="true" />
+			<header enabled="true" key="Access-Control-Allow-Methods" value="GET, POST, PUT, DELETE, OPTIONS, HEAD" />
+		</headers>
+	</server>
 	<security>
-		<tokenDurationSeconds>3600</tokenDurationSeconds>
+		<accessTokenDurationSeconds>600</accessTokenDurationSeconds>
+		<refreshTokenDurationDays>365</refreshTokenDurationDays>
+		<jwtSecret>Ry+0VzEFbE6l3otOqIDDPGlEZeVd0pYLboIDOM4cWs0=</jwtSecret>
 		<authorizedUsers>
 			<user name="admin" password="admin" />
 		</authorizedUsers>

@@ -24,7 +24,7 @@ public class ResponseUtils {
 		return ResponseUtils.success(message, 500);
 	}
 	
-	public static Response error(String message, int status) {
+	public static Response error(Object message, int status) {
 		return Response.status(status).entity(message).build();
 	}
 	

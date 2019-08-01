@@ -31,6 +31,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
 @Api("Pet Resource")
 @Path("/resource/pet")
@@ -40,10 +41,10 @@ public class PetResource {
 	
 	@Inject DataSource dataSource;
 	
-	@Secured.Bearer
+	@Secured.Access
 	@GET @Path("/list")
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "List all pets", response = Pet.class, responseContainer = "List")
+	@ApiOperation(value = "List all pets", response = Pet.class, responseContainer = "List", authorizations = @Authorization("access"))
 	@ApiResponses({
 		@ApiResponse(code = 500, message = "Internal error")
 	})
@@ -57,9 +58,10 @@ public class PetResource {
 		}
  	}
 	
+	@Secured.Access
 	@GET @Path("/get/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Get a pet by id", response = Pet.class)
+	@ApiOperation(value = "Get a pet by id", response = Pet.class, authorizations = @Authorization("access"))
 	@ApiResponses({
 		@ApiResponse(code = 400, message = "Pet not found"),
 		@ApiResponse(code = 500, message = "Internal error")
@@ -76,9 +78,10 @@ public class PetResource {
 		}
  	}
 	
+	@Secured.Access
 	@PUT @Path("/create")
 	@Produces(MediaType.APPLICATION_JSON) @Consumes(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Create a pet", response = Pet.class, notes = "If id is not provided, it will be randomly generated")
+	@ApiOperation(value = "Create a pet", response = Pet.class, notes = "If id is not provided, it will be randomly generated", authorizations = @Authorization("access"))
 	@ApiResponses({
 		@ApiResponse(code = 400, message = "Pet already exists"),
 		@ApiResponse(code = 500, message = "Internal error")
@@ -96,9 +99,10 @@ public class PetResource {
 		}
  	}
 	
+	@Secured.Access
 	@POST @Path("/update")
 	@Produces(MediaType.APPLICATION_JSON) @Consumes(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Update a pet", response = Pet.class)
+	@ApiOperation(value = "Update a pet", response = Pet.class, authorizations = @Authorization("access"))
 	@ApiResponses({
 		@ApiResponse(code = 400, message = "Pet not found"),
 		@ApiResponse(code = 500, message = "Internal error")
@@ -115,8 +119,9 @@ public class PetResource {
 		}
  	}
 	
+	@Secured.Access
 	@DELETE @Path("/delete/{id}")
-	@ApiOperation(value = "Delete a pet")
+	@ApiOperation(value = "Delete a pet", authorizations = @Authorization("access"))
 	@ApiResponses({
 		@ApiResponse(code = 400, message = "Pet not found"),
 		@ApiResponse(code = 500, message = "Internal error")

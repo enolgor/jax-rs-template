@@ -22,7 +22,7 @@ public class BasicAuthRequestFilter extends AuthRequestFilter{
 	@Inject BasicAuthenticationProvider basicAuthenticator;
 
 	public BasicAuthRequestFilter() {
-		super(AuthenticationHeader.Scheme.BASIC);
+		super(AuthenticationScheme.BASIC);
 	}
 
 	@Override

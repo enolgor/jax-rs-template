@@ -11,44 +11,19 @@ import es.enolgor.app.auth.AuthenticationException;
 
 public abstract class AuthenticationHeader {
 	
-	public static enum Scheme {
-		
-		BASIC("Basic"), BEARER("Bearer");
-		
-		private String schemeString;
-		
-		private Scheme(String schemeString) {
-			this.schemeString = schemeString;
-		}
-		
-		@Override
-		public String toString() {
-			return schemeString;
-		}
-		
-		public static Scheme get(String authenticationHeader) throws AuthenticationException {
-			if(authenticationHeader == null) throw AuthenticationException.UNDEFINED;
-			for(Scheme scheme : Scheme.values()) {
-				if(authenticationHeader.toLowerCase().startsWith(scheme.schemeString.toLowerCase() + " ")) return scheme;
-			}
-			throw AuthenticationException.UNSUPPORTED;
-		}
-		
-	}
+	private AuthenticationScheme scheme;
 	
-	private Scheme scheme;
-	
-	private AuthenticationHeader(Scheme scheme) {
+	private AuthenticationHeader(AuthenticationScheme scheme) {
 		this.scheme = scheme;
 	}
 	
-	public Scheme getScheme() {
+	public AuthenticationScheme getAuthenticationScheme() {
 		return this.scheme;
 	}
 	
 	public static AuthenticationHeader getFromContext(ContainerRequestContext requestContext) throws AuthenticationException {
 		String authenticationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-		Scheme scheme = Scheme.get(authenticationHeader);
+		AuthenticationScheme scheme = AuthenticationScheme.getFromHeader(authenticationHeader);
 		String authValue = authenticationHeader.substring(authenticationHeader.indexOf(" ") + 1);
 		switch(scheme) {
 		case BASIC: return new BasicAuthenticationHeader(authValue);
@@ -63,7 +38,7 @@ public abstract class AuthenticationHeader {
 		private String password;
 		
 		private BasicAuthenticationHeader(String b64auth) throws AuthenticationException {
-			super(Scheme.BASIC);
+			super(AuthenticationScheme.BASIC);
 			this.username = null;
 			this.password = null;
 			String usernameAndPassword = null;
@@ -93,7 +68,7 @@ public abstract class AuthenticationHeader {
 		private String bearer;
 		
 		private BearerAuthenticationHeader(String bearer) throws AuthenticationException{
-			super(Scheme.BEARER);
+			super(AuthenticationScheme.BEARER);
 			this.bearer = bearer;
 		}
 		

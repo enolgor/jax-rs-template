@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import es.enolgor.app.auth.UserTokenManager;
 import es.enolgor.app.datasource.DataSource;
 import es.enolgor.app.datasource.dao.providers.PetProvider;
 import es.enolgor.configuration.Configuration;
@@ -18,6 +19,12 @@ public class MysqlDataSource implements DataSource{
 	@Override
 	public PetProvider getPetProvider() {
 		return mysqlPetProvider;
+	}
+	
+	@Override
+	public UserTokenManager getUserTokenManager() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -39,5 +46,4 @@ public class MysqlDataSource implements DataSource{
 		PreparedStatement stm = conn.prepareStatement(Statements.CREATE_PET_TABLE);
 		stm.execute();
 	}
-
 }

@@ -6,7 +6,7 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
 import es.enolgor.app.auth.BasicAuthenticationProvider;
 import es.enolgor.app.auth.ConfigBasicAuthenticationProviderImpl;
-import es.enolgor.app.auth.MemoryTokenAuthenticationProviderImpl;
+import es.enolgor.app.auth.JWTAuthenticationProvider;
 import es.enolgor.app.auth.TokenAuthenticationProvider;
 import es.enolgor.app.datasource.DataSource;
 import es.enolgor.app.datasource.impl.memory.MemoryDataSource;
@@ -27,13 +27,12 @@ public class AppBinder extends AbstractBinder{
 			Configuration defaultConfiguration = ConfigurationProvider.readConfigurationFromStream(App.class.getResourceAsStream("/default.configuration.xml"));
 			configuration = ConfigurationProvider.readConfigurationFromFile(Paths.get(AppProperties.getAppConfigurationDir(), "configuration.xml").toString(), defaultConfiguration);
 			
-			basicAuthProvider = new ConfigBasicAuthenticationProviderImpl(configuration);
-			tokenAuthProvider = new MemoryTokenAuthenticationProviderImpl();
-			
 			//dataSource = new MysqlDataSource();
 			dataSource = new MemoryDataSource();
 			
-			
+			basicAuthProvider = new ConfigBasicAuthenticationProviderImpl(configuration);
+			tokenAuthProvider = new JWTAuthenticationProvider(configuration, dataSource);
+
 		}catch(Exception ex) {
 			throw new RuntimeException(ex);
 		}

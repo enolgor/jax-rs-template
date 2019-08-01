@@ -18,8 +18,12 @@ public class Configuration {
 	private SecurityConfiguration securityConfiguration;
 	public SecurityConfiguration getSecurityConfiguration(){ return securityConfiguration; }
 	
+	@Element( name = "server")
+	private ServerConfiguration serverConfiguration;
+	public ServerConfiguration getServerConfiguration(){ return serverConfiguration; }
+	
 	@Root(name = "database")
-	public static class DatabaseConfiguration{
+	public static class DatabaseConfiguration {
 		
 		@Element
 		private String url;
@@ -37,8 +41,16 @@ public class Configuration {
 	@Root(name = "security")
 	public static class SecurityConfiguration {
 		@Element
-		private int tokenDurationSeconds;
-		public int getTokenDurationSeconds() { return tokenDurationSeconds; }
+		private int accessTokenDurationSeconds;
+		public int getAccessTokenDurationSeconds() { return accessTokenDurationSeconds; }
+		
+		@Element
+		private int refreshTokenDurationDays;
+		public int getRefreshTokenDurationDays() { return refreshTokenDurationDays; }
+		
+		@Element
+		private String jwtSecret;
+		public String getJWTSecret() { return jwtSecret; }
 		
 		@ElementList
 		private List<AuthorizedUser> authorizedUsers;
@@ -54,5 +66,27 @@ public class Configuration {
 		@Attribute
 		private String password;
 		public String getPassword() { return password; }
+	}
+	
+	@Root(name = "server")
+	public static class ServerConfiguration {
+		@ElementList
+		private List<Header> headers;
+		public List<Header> getHeaders() { return headers; }
+	}
+	
+	@Root(name = "header")
+	public static class Header {
+		@Attribute
+		private boolean enabled;
+		public boolean isEnabled() { return enabled; }
+		
+		@Attribute
+		private String key;
+		public String getKey() { return key; }
+		
+		@Attribute
+		private String value;
+		public String getValue() { return value; }
 	}
 }

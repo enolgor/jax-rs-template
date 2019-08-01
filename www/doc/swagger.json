@@ -16,7 +16,7 @@
     "/authorization/token/generate" : {
       "get" : {
         "tags" : [ "Authorization API" ],
-        "summary" : "Generate new authorization token",
+        "summary" : "Generate new authorization access and refresh token",
         "description" : "",
         "operationId" : "generateToken",
         "produces" : [ "application/json" ],
@@ -24,43 +24,80 @@
           "200" : {
             "description" : "successful operation",
             "schema" : {
-              "$ref" : "#/definitions/TokenInstance"
+              "$ref" : "#/definitions/GeneratedToken"
             }
           },
           "401" : {
             "description" : "Unauthorized"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/authorization/token/refresh" : {
-      "post" : {
+      "get" : {
         "tags" : [ "Authorization API" ],
-        "summary" : "Refresh authorization token",
+        "summary" : "Generate new access token given the refresh token",
         "description" : "",
         "operationId" : "refreshToken",
-        "consumes" : [ "text/plain" ],
         "produces" : [ "application/json" ],
-        "parameters" : [ {
-          "in" : "body",
-          "name" : "body",
-          "description" : "Token",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
         "responses" : {
           "200" : {
             "description" : "successful operation",
             "schema" : {
-              "$ref" : "#/definitions/TokenInstance"
+              "$ref" : "#/definitions/GeneratedToken"
             }
           },
           "401" : {
             "description" : "Unauthorized"
           }
-        }
+        },
+        "security" : [ {
+          "refresh" : [ ]
+        } ]
+      }
+    },
+    "/authorization/token/revoke/{token}" : {
+      "get" : {
+        "tags" : [ "Authorization API" ],
+        "summary" : "Revoke specified refresh token",
+        "description" : "",
+        "operationId" : "revokeToken",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "path",
+          "description" : "Refresh Token",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "Unauthorized"
+          }
+        },
+        "security" : [ {
+          "access" : [ ]
+        } ]
+      }
+    },
+    "/authorization/token/revokeAll" : {
+      "get" : {
+        "tags" : [ "Authorization API" ],
+        "summary" : "Revoke all refresh tokens",
+        "description" : "",
+        "operationId" : "revokeAll",
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "401" : {
+            "description" : "Unauthorized"
+          }
+        },
+        "security" : [ {
+          "access" : [ ]
+        } ]
       }
     },
     "/resource/pet/create" : {
@@ -93,7 +130,10 @@
           "500" : {
             "description" : "Internal error"
           }
-        }
+        },
+        "security" : [ {
+          "access" : [ ]
+        } ]
       }
     },
     "/resource/pet/delete/{id}" : {
@@ -116,7 +156,10 @@
           "500" : {
             "description" : "Internal error"
           }
-        }
+        },
+        "security" : [ {
+          "access" : [ ]
+        } ]
       }
     },
     "/resource/pet/get/{id}" : {
@@ -146,7 +189,10 @@
           "500" : {
             "description" : "Internal error"
           }
-        }
+        },
+        "security" : [ {
+          "access" : [ ]
+        } ]
       }
     },
     "/resource/pet/list" : {
@@ -169,7 +215,10 @@
           "500" : {
             "description" : "Internal error"
           }
-        }
+        },
+        "security" : [ {
+          "access" : [ ]
+        } ]
       }
     },
     "/resource/pet/update" : {
@@ -202,11 +251,40 @@
           "500" : {
             "description" : "Internal error"
           }
-        }
+        },
+        "security" : [ {
+          "access" : [ ]
+        } ]
       }
     }
   },
+  "securityDefinitions" : {
+    "access" : {
+      "type" : "apiKey",
+      "name" : "Authorization",
+      "in" : "header"
+    },
+    "basic" : {
+      "type" : "basic"
+    },
+    "refresh" : {
+      "type" : "apiKey",
+      "name" : "Authorization",
+      "in" : "header"
+    }
+  },
   "definitions" : {
+    "GeneratedToken" : {
+      "type" : "object",
+      "properties" : {
+        "accessToken" : {
+          "type" : "string"
+        },
+        "refreshToken" : {
+          "type" : "string"
+        }
+      }
+    },
     "Pet" : {
       "type" : "object",
       "properties" : {
@@ -222,18 +300,6 @@
         "currentDisease" : {
           "type" : "string",
           "enum" : [ "RABIA", "MOQUILLO", "PULGAS", "GARRAPATAS", "LEISHMANIOSIS" ]
-        }
-      }
-    },
-    "TokenInstance" : {
-      "type" : "object",
-      "properties" : {
-        "token" : {
-          "type" : "string"
-        },
-        "expiration" : {
-          "type" : "integer",
-          "format" : "int64"
         }
       }
     }

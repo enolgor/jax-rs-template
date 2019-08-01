@@ -52,6 +52,7 @@ public class AuthenticationException extends Exception {
 	public static final AuthenticationException MALFORMED = new AuthenticationException(new AuthenticationExceptionReason(3, "Malformed authentication header"));
 	public static final AuthenticationException INCORRECTUSERPASS = new AuthenticationException(new AuthenticationExceptionReason(4, "Incorrect username or password"));
 	public static final AuthenticationException TOKENNOTFOUND = new AuthenticationException(new AuthenticationExceptionReason(5, "Specified token not found"));
-	public static final AuthenticationException TOKENEXPIRED = new AuthenticationException(new AuthenticationExceptionReason(6, "Specified token has expired and will be deleted"));
-	public static final AuthenticationException ACTIVETOKENEXISTS = new AuthenticationException(new AuthenticationExceptionReason(7, "An active token already exists for given user"));
+	public static final AuthenticationException TOKENEXPIRED = new AuthenticationException(new AuthenticationExceptionReason(6, "Specified token has expired"));
+	public static final AuthenticationException UNTRUSTEDTOKEN = new AuthenticationException(new AuthenticationExceptionReason(7, "Specified token is not trusted or can't be verified"));
+	public static final AuthenticationException INCORRECTTOKEN = new AuthenticationException(new AuthenticationExceptionReason(8, "Incorrect token"));
 }

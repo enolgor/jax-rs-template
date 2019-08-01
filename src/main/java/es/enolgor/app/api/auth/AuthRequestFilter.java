@@ -18,17 +18,17 @@ public abstract class AuthRequestFilter implements ContainerRequestFilter {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AuthRequestFilter.class);
 	
-	private final AuthenticationHeader.Scheme scheme;
+	private final AuthenticationScheme authenticationScheme;
 	
-	public AuthRequestFilter(AuthenticationHeader.Scheme scheme) {
-		this.scheme = scheme;
+	public AuthRequestFilter(AuthenticationScheme authenticationScheme) {
+		this.authenticationScheme = authenticationScheme;
 	}
 	
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 		try {
 			AuthenticationHeader authHeader = AuthenticationHeader.getFromContext(requestContext);
-			if(authHeader.getScheme() != this.scheme) {
+			if(authHeader.getAuthenticationScheme() != this.authenticationScheme) {
 				throw AuthenticationException.UNSUPPORTED;
 			}
 			final String username = authenticate(authHeader);
@@ -56,7 +56,7 @@ public abstract class AuthRequestFilter implements ContainerRequestFilter {
 
 			    @Override
 			    public String getAuthenticationScheme() {
-			        return scheme.toString();
+			        return authenticationScheme.toString();
 			    }
 			    
 			});
@@ -68,7 +68,7 @@ public abstract class AuthRequestFilter implements ContainerRequestFilter {
 	}
 	
 	private void abort(ContainerRequestContext requestContext, AuthenticationException e) {
-		requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).header(HttpHeaders.WWW_AUTHENTICATE, scheme.toString()).entity(e.getReason()).build());
+		requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).header(HttpHeaders.WWW_AUTHENTICATE, authenticationScheme.toString()).entity(e.getReason()).build());
 	}
 	
 	public abstract String authenticate(AuthenticationHeader header) throws AuthenticationException;

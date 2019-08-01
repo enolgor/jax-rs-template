@@ -12,24 +12,24 @@ import es.enolgor.app.api.auth.AuthenticationHeader.BearerAuthenticationHeader;
 import es.enolgor.app.auth.AuthenticationException;
 import es.enolgor.app.auth.TokenAuthenticationProvider;
 
-@Secured.Bearer
+@Secured.Refresh
 @Provider
 @Priority(Priorities.AUTHENTICATION)
-public class BearerAuthRequestFilter extends AuthRequestFilter{
+public class RefreshTokenAuthRequestFilter extends AuthRequestFilter{
 	
-	private static final Logger logger = LoggerFactory.getLogger(BearerAuthRequestFilter.class);
+	private static final Logger logger = LoggerFactory.getLogger(RefreshTokenAuthRequestFilter.class);
 	
 	@Inject TokenAuthenticationProvider tokenAuthenticator;
 
-	public BearerAuthRequestFilter() {
-		super(AuthenticationHeader.Scheme.BEARER);
+	public RefreshTokenAuthRequestFilter() {
+		super(AuthenticationScheme.BEARER);
 	}
 
 	@Override
 	public String authenticate(AuthenticationHeader header) throws AuthenticationException {
 		BearerAuthenticationHeader bearerAuthHeader = (BearerAuthenticationHeader) header;
 		logger.info(String.format("Bearer Authentication Request: %s", bearerAuthHeader.getBearer()));
-		return tokenAuthenticator.authenticate(bearerAuthHeader.getBearer());
+		return tokenAuthenticator.authenticateRefreshToken(bearerAuthHeader.getBearer());
 	}
 
 }

@@ -1,7 +1,8 @@
 package es.enolgor.app.auth;
 
 public interface TokenAuthenticationProvider {
-	public String authenticate(String token) throws AuthenticationException;
-	public TokenInstance generateToken(String username, int durationSeconds) throws AuthenticationException;
-	public TokenInstance refreshToken(String token, int durationSeconds) throws AuthenticationException;
+	public String authenticateAccessToken(String token) throws AuthenticationException;
+	public String authenticateRefreshToken(String token) throws AuthenticationException;
+	public String generateAccessToken(String username);
+	public String generateRefreshToken(String username);
 }

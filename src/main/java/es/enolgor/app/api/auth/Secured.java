@@ -17,5 +17,10 @@ public class Secured {
 	@NameBinding
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.TYPE, ElementType.METHOD})
-	public @interface Bearer { }
+	public @interface Access { }
+	
+	@NameBinding
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target({ElementType.TYPE, ElementType.METHOD})
+	public @interface Refresh { }
 }

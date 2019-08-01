@@ -19,7 +19,7 @@
 		</init-param>
 		<init-param>
 			<param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
-			<param-value>es.enolgor.app.api.auth</param-value>
+			<param-value>${webapp.api.package}</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>

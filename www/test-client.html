@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <script src="client.js"></script>
+    <script>
+      const client = new Client('http://racoon.iot1.etsit.upv.es:8888/petstore/api');
+    </script>
+    <script>
+      const onClientLogin = () => {
+        document.querySelector("#login-form").style.display = "none";
+        document.querySelector("#greet").innerHTML = `Hello ${client.username}!!`;
+        document.querySelector("#logout-status").innerHTML = "";
+        document.querySelector("#logout-form").style.display = "";
+      };
+      const onClientLogout = () => {
+        document.querySelector("#logout-form").style.display = "none";
+        document.querySelector("#login-status").innerHTML = "";
+        document.querySelector("#login-form-username").value = "";
+        document.querySelector("#login-form-password").value = "";
+        document.querySelector("#login-form").style.display = "";
+      };
+      const login = () => {
+        const username = document.querySelector("#login-form-username").value;
+        const password = document.querySelector("#login-form-password").value;
+        client.authenticate(username, password).then(onClientLogin).catch(err => {
+          document.querySelector("#login-status").innerHTML = err.message;
+        });
+      };
+      const logout = () => {
+        client.logout().then(onClientLogout).catch(err => {
+          document.querySelector("#logout-status").innerHTML = err.message;
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <div id="login-form">
+      <input type="text" id="login-form-username" /><br/>
+      <input type="password" id="login-form-password" /><br/>
+      <input type="button" onclick="login();" value="Login"/><br/>
+      <span id="login-status" style="color:red;"></span>
+    </div>
+    <div id="logout-form" style="display:none;">
+      <span id="greet"></span><br/>
+      <input type="button" onclick="logout();" value="Logout"/>
+      <span id="logout-status" style="color:red;"></span>
+    </div>
+  </body>
+  <script>
+    if(client.isAuthenticated) {
+      onClientLogin();
+    } else {
+      onClientLogout();
+    }
+  </script>
+</html>
